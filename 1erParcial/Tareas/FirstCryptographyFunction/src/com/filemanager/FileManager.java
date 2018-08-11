@@ -22,10 +22,9 @@ public class FileManager {
 
         try {
 
-            JFileChooser fileChooserChooser = new JFileChooser(dirPath);
-            fileChooserChooser.showOpenDialog(null);
-
-            inputFile = fileChooserChooser.getSelectedFile();
+            JFileChooser fileChooser = new JFileChooser(dirPath);
+            fileChooser.showOpenDialog(null);
+            inputFile = fileChooser.getSelectedFile();
 
             if (inputFile != null) {
                 FileReader archivos = new FileReader(inputFile);
