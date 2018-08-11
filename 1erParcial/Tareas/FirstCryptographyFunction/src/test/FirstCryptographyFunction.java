@@ -1,5 +1,7 @@
 
-package firstcryptographyfunction;
+package test;
+
+import com.algorithms.AESencryption;
 
 public class FirstCryptographyFunction {
 

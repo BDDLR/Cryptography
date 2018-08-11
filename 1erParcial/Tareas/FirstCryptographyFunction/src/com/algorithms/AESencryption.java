@@ -1,6 +1,4 @@
-
-package firstcryptographyfunction;
-
+package com.algorithms;
 
 import java.security.Key;
 import java.util.logging.Level;
