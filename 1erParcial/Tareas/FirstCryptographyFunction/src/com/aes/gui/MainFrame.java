@@ -118,7 +118,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         FileManager fm = new FileManager();
         inputText = fm.openFile();
-
         inputTextField.setText(fm.getFilePath());
     }//GEN-LAST:event_browseButtonActionPerformed
 
@@ -141,7 +140,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void decryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptButtonActionPerformed
         if (!inputTextField.getText().isEmpty()) {
             try {
-                decData = aes.decryptData(encData);
+                decData = aes.decryptData(inputText);
                 FileManager fm = new FileManager();
                 fm.saveToFile(decData);
             } catch (Exception ex) {
