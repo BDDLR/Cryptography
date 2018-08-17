@@ -39,6 +39,9 @@ public class FileManager {
                     + "\nNo se ha encontrado el archivo",
                     "ADVERTENCIA!!!", JOptionPane.WARNING_MESSAGE);
         }
+        catch(NullPointerException n){
+            
+        }
         return sourceData;
     }
 
@@ -68,6 +71,10 @@ public class FileManager {
     }
 
     public String getFilePath() {
-        return inputFile.getAbsolutePath();
+        try {
+            return inputFile.getAbsolutePath();
+        } catch (Exception e) {
+        }
+        return null;
     }
 }

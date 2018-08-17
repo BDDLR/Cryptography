@@ -33,6 +33,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         encryptButton = new javax.swing.JButton();
         decryptButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        keyTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,29 +70,44 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Type the key:");
+
+        keyTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyTextFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(encryptButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                                .addComponent(decryptButton))
-                            .addComponent(inputTextField, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(browseButton)
-                        .addGap(19, 19, 19))
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(keyTextField)
+                        .addGap(105, 105, 105))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(titleLabel)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(encryptButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                                        .addComponent(decryptButton))
+                                    .addComponent(inputTextField, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(browseButton)
+                                .addGap(19, 19, 19))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(titleLabel)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,11 +119,15 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(inputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(browseButton))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(keyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(encryptButton)
                     .addComponent(decryptButton))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
@@ -123,37 +144,57 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_browseButtonActionPerformed
 
     private void encryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encryptButtonActionPerformed
-        if (!inputTextField.getText().isEmpty()) {
+        if (!inputTextField.getText().isEmpty()&& !keyTextField.getText().isEmpty()) {
+            int keyValue = Integer.parseInt(keyTextField.getText());
+            if (keyValue > 26){
+                keyValue = keyValue % 26;
+                JOptionPane.showMessageDialog(this, "The key value is invalid. The equivalent key is "+ keyValue, "Info", JOptionPane.INFORMATION_MESSAGE, null);
+            }
             try {
-                Caesar c = new Caesar(inputText, 3);
+                Caesar c = new Caesar(inputText, keyValue);
                 encData = c.caesarEncrypt();
                 FileManager fm = new FileManager();
                 fm.saveToFile(encData);
             } catch (Exception ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            inputTextField.setText("");
+            clearForm();
 
         } else {
-            JOptionPane.showMessageDialog(this, "Select an input file", "Error", JOptionPane.ERROR_MESSAGE, null);
+            JOptionPane.showMessageDialog(this, "Select an input file and give a key value", "Error", JOptionPane.ERROR_MESSAGE, null);
         }
     }//GEN-LAST:event_encryptButtonActionPerformed
 
     private void decryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptButtonActionPerformed
-        if (!inputTextField.getText().isEmpty()) {
+        if (!inputTextField.getText().isEmpty() && !keyTextField.getText().isEmpty()) {
+            int keyValue = Integer.parseInt(keyTextField.getText());
+            if (keyValue > 26){
+                keyValue = keyValue % 26;
+                JOptionPane.showMessageDialog(this, "The key value is invalid. The equivalent key is "+ keyValue, "Info", JOptionPane.INFORMATION_MESSAGE, null);
+            }
             try {
-                Caesar c = new Caesar(inputText, 3);
+                Caesar c = new Caesar(inputText, keyValue);
                 decData = c.caesarDecrypt();
                 FileManager fm = new FileManager();
                 fm.saveToFile(decData);
             } catch (Exception ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            inputTextField.setText("");
+            clearForm();
+            
         } else {
-            JOptionPane.showMessageDialog(this, "Select an input file", "Error", JOptionPane.ERROR_MESSAGE, null);
+            JOptionPane.showMessageDialog(this, "Select an input file and give a key value", "Error", JOptionPane.ERROR_MESSAGE, null);
         }
     }//GEN-LAST:event_decryptButtonActionPerformed
+
+    public void clearForm(){
+        inputTextField.setText("");
+        keyTextField.setText("");
+    }
+    
+    private void keyTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_keyTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,6 +237,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton encryptButton;
     private javax.swing.JTextField inputTextField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JTextField keyTextField;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

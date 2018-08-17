@@ -6,45 +6,48 @@ public class Caesar {
 
     private String message;
     private int key;
-    private static final String upC = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
-    private static final String lowC = "abcdefghijklmnñopqrstuvwxyz";
+    private int returnKey;
+    private final int factor = 123;
+    private final int overflowMay = 97;
+    private final int overflowMin = 26;
+    private final int toUpper = -32;
+    private final int toLow = 32;
 
     public Caesar(String message, int key) {
         this.message = message;
         this.key = key;
+        this.returnKey = -key;
     }
 
     public String caesarEncrypt() {
-        char[] aux = new char[message.length()];
 
-        for (int i = 0; i < message.length(); i++) {
-            for (int j = 0; j < upC.length(); j++) {
-                if (message.charAt(i) == upC.charAt(j) || message.charAt(i) == lowC.charAt(j)) {
-                    aux[i] = upC.toCharArray()[(j + key) % upC.length()];
-                    j = upC.length();
+        String decMessage = new String();
+
+        for (char c : message.toCharArray()) {
+            if (c >= 97 && c <= 122) {
+                if (c > 119) {
+                    decMessage += (char) (((c + key) % factor) + overflowMay + toUpper);
                 } else {
-                    aux[i] = message.charAt(i);
+                    decMessage += (char) (((c + key) % factor) + toUpper);
                 }
             }
         }
-        String encMessage = new String(aux);
-        return encMessage;
+        return decMessage;
     }
 
     public String caesarDecrypt() {
-        char[] aux = new char[message.length()];
 
-        for (int i = 0; i < message.length(); i++) {
-            for (int j = 0; j < upC.length(); j++) {
-                if (message.charAt(i) == upC.charAt(j) || message.charAt(i) == lowC.charAt(j)) {
-                    aux[i] = upC.toCharArray()[(j - key + upC.length()) % upC.length()];
-                    j = upC.length();
+        String decMessage = new String();
+
+        for (char c : message.toCharArray()) {
+            if (c >= 65 && c <= 90) {
+                if (c < 68) {
+                    decMessage += (char) (((c + returnKey) % factor) + toLow + overflowMin);
                 } else {
-                    aux[i] = message.charAt(i);
+                    decMessage += (char) (((c + returnKey) % factor) + toLow);
                 }
             }
         }
-        String decMessage = new String(aux);
         return decMessage;
     }
 
