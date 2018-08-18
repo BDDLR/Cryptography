@@ -7,11 +7,10 @@ public class Caesar {
     private String message;
     private int key;
     private int returnKey;
-    private final int factor = 123;
-    private final int overflowMay = 97;
-    private final int overflowMin = 26;
-    private final int toUpper = -32;
-    private final int toLow = 32;
+    private final int factor1 = 97;
+    private final int factor2 = 65;
+    private final int toUpper = 65;
+    private final int toLow = 97;
 
     public Caesar(String message, int key) {
         this.message = message;
@@ -25,11 +24,7 @@ public class Caesar {
 
         for (char c : message.toCharArray()) {
             if (c >= 97 && c <= 122) {
-                if (c > 119) {
-                    decMessage += (char) (((c + key) % factor) + overflowMay + toUpper);
-                } else {
-                    decMessage += (char) (((c + key) % factor) + toUpper);
-                }
+                decMessage += (char) (((c - factor1 + key) % 26) + toUpper);
             }
         }
         return decMessage;
@@ -41,10 +36,10 @@ public class Caesar {
 
         for (char c : message.toCharArray()) {
             if (c >= 65 && c <= 90) {
-                if (c < 68) {
-                    decMessage += (char) (((c + returnKey) % factor) + toLow + overflowMin);
-                } else {
-                    decMessage += (char) (((c + returnKey) % factor) + toLow);
+                if(c - factor2 + returnKey >= 0){
+                    decMessage += (char) (((c - factor2 + returnKey) % 26) + toLow);
+                }else{
+                    decMessage += (char) (((c + factor2 + returnKey) % 26) + toLow);
                 }
             }
         }
