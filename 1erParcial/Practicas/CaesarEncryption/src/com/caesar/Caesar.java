@@ -1,12 +1,10 @@
 package com.caesar;
 
-import java.util.Arrays;
-
 public class Caesar {
 
     private String message;
     private int key;
-    private int returnKey;
+    private final int keyInv;
     private final int factor1 = 97;
     private final int factor2 = 65;
     private final int toUpper = 65;
@@ -15,7 +13,7 @@ public class Caesar {
     public Caesar(String message, int key) {
         this.message = message;
         this.key = key;
-        this.returnKey = -key;
+        this.keyInv = (26 - key);
     }
 
     public String caesarEncrypt() {
@@ -36,11 +34,9 @@ public class Caesar {
 
         for (char c : message.toCharArray()) {
             if (c >= 65 && c <= 90) {
-                if(c - factor2 + returnKey >= 0){
-                    decMessage += (char) (((c - factor2 + returnKey) % 26) + toLow);
-                }else{
-                    decMessage += (char) (((c + factor2 + returnKey) % 26) + toLow);
-                }
+                c -= factor2;
+                c = (char) ((c+keyInv)%26);
+                decMessage += (char) (c + toLow);
             }
         }
         return decMessage;
