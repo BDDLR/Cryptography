@@ -1,6 +1,6 @@
 package com.gui;
 
-import com.caesar.Caesar;
+import com.affinecipher.AffineCipher;
 import com.filemanager.FileManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +11,7 @@ public class MainFrame extends javax.swing.JFrame {
     private String inputText = "";
     String encData = null;
     String decData = null;
+    char validBetha[] = {1,3,5,7,9,11,15,17,19,21,23,25};
     
 
     public MainFrame() {
@@ -34,11 +35,14 @@ public class MainFrame extends javax.swing.JFrame {
         encryptButton = new javax.swing.JButton();
         decryptButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        keyTextField = new javax.swing.JTextField();
+        bethaField = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        alphaBox = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        titleLabel.setText("SHIFT - CIPHER");
+        titleLabel.setText("AFFINE - CIPHER");
 
         inputTextField.setEditable(false);
         inputTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -70,62 +74,85 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Type the key:");
+        jLabel2.setText("Select alpha:");
 
-        keyTextField.addActionListener(new java.awt.event.ActionListener() {
+        bethaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keyTextFieldActionPerformed(evt);
+                bethaFieldActionPerformed(evt);
             }
         });
+
+        jLabel3.setText("Type betha:");
+
+        alphaBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "3", "5", "7", "9", "11", "15", "17", "19", "21", "23", "25" }));
+        alphaBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alphaBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("c = (alpha * p) + betha mod 26");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(keyTextField)
-                        .addGap(104, 104, 104))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(encryptButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                                .addComponent(decryptButton))
-                            .addComponent(inputTextField, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(browseButton)
-                        .addGap(19, 19, 19))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(titleLabel)
                 .addGap(167, 167, 167))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(alphaBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(encryptButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                        .addComponent(decryptButton))
+                    .addComponent(inputTextField)
+                    .addComponent(bethaField, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(browseButton)
+                .addGap(19, 19, 19))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(149, 149, 149)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(titleLabel)
-                .addGap(33, 33, 33)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(browseButton))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(keyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(alphaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(36, 36, 36))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(bethaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(encryptButton)
                     .addComponent(decryptButton))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -142,15 +169,16 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_browseButtonActionPerformed
 
     private void encryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encryptButtonActionPerformed
-        if (!inputTextField.getText().isEmpty()&& !keyTextField.getText().isEmpty()) {
-            int keyValue = Integer.parseInt(keyTextField.getText());
-            if (keyValue > 26){
-                keyValue = keyValue % 26;
-                JOptionPane.showMessageDialog(this, "The key value is invalid. The equivalent key is "+ keyValue, "Info", JOptionPane.INFORMATION_MESSAGE, null);
+        if (!inputTextField.getText().isEmpty()&& !bethaField.getText().isEmpty()) {
+            int alpha = Integer.parseInt(alphaBox.getSelectedItem().toString());
+            int betha =  Integer.parseInt(bethaField.getText());
+            if (alpha > 26){
+                alpha = alpha % 26;
+                JOptionPane.showMessageDialog(this, "The alpha value is invalid. The equivalent alpha is "+ alpha, "Info", JOptionPane.INFORMATION_MESSAGE, null);
             }
             try {
-                Caesar c = new Caesar(inputText, keyValue);
-                encData = c.caesarEncrypt();
+                AffineCipher c = new AffineCipher(inputText, alpha, betha);
+                encData = c.encrypt();
                 FileManager fm = new FileManager();
                 fm.saveToFile(encData);
             } catch (Exception ex) {
@@ -159,20 +187,22 @@ public class MainFrame extends javax.swing.JFrame {
             clearForm();
 
         } else {
-            JOptionPane.showMessageDialog(this, "Select an input file and give a key value", "Error", JOptionPane.ERROR_MESSAGE, null);
+            JOptionPane.showMessageDialog(this, "Select an input file, give an alpha and a betha value", "Error", JOptionPane.ERROR_MESSAGE, null);
         }
     }//GEN-LAST:event_encryptButtonActionPerformed
 
     private void decryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptButtonActionPerformed
-        if (!inputTextField.getText().isEmpty() && !keyTextField.getText().isEmpty()) {
-            int keyValue = Integer.parseInt(keyTextField.getText());
-            if (keyValue > 26){
-                keyValue = keyValue % 26;
-                JOptionPane.showMessageDialog(this, "The key value is invalid. The equivalent key is "+ keyValue, "Info", JOptionPane.INFORMATION_MESSAGE, null);
+        if (!inputTextField.getText().isEmpty() && !bethaField.getText().isEmpty()) {
+            int alpha = Integer.parseInt(alphaBox.getSelectedItem().toString());
+            int betha =  Integer.parseInt(bethaField.getText());
+            System.out.println(betha);
+            if (alpha > 26){
+                alpha = alpha % 26;
+                JOptionPane.showMessageDialog(this, "The key value is invalid. The equivalent key is "+ alpha, "Info", JOptionPane.INFORMATION_MESSAGE, null);
             }
             try {
-                Caesar c = new Caesar(inputText, keyValue);
-                decData = c.caesarDecrypt();
+                AffineCipher c = new AffineCipher(inputText, alpha, betha);
+                decData = c.decrypt();
                 FileManager fm = new FileManager();
                 fm.saveToFile(decData);
             } catch (Exception ex) {
@@ -181,18 +211,22 @@ public class MainFrame extends javax.swing.JFrame {
             clearForm();
             
         } else {
-            JOptionPane.showMessageDialog(this, "Select an input file and give a key value", "Error", JOptionPane.ERROR_MESSAGE, null);
+            JOptionPane.showMessageDialog(this, "Select an input file, give an alpha and a betha value", "Error", JOptionPane.ERROR_MESSAGE, null);
         }
     }//GEN-LAST:event_decryptButtonActionPerformed
 
     public void clearForm(){
         inputTextField.setText("");
-        keyTextField.setText("");
+        bethaField.setText("");
     }
     
-    private void keyTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyTextFieldActionPerformed
+    private void bethaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bethaFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_keyTextFieldActionPerformed
+    }//GEN-LAST:event_bethaFieldActionPerformed
+
+    private void alphaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alphaBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_alphaBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,13 +264,16 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> alphaBox;
+    private javax.swing.JTextField bethaField;
     private javax.swing.JButton browseButton;
     private javax.swing.JButton decryptButton;
     private javax.swing.JButton encryptButton;
     private javax.swing.JTextField inputTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField keyTextField;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
