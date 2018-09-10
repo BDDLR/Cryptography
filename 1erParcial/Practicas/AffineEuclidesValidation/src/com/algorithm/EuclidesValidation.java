@@ -15,7 +15,11 @@ public class EuclidesValidation {
         this.a = a;
         this.b = b;
         this.n = n;
-        this.inv_b = n - b;
+        this.inv_b = (n - b);
+    }
+    
+    public int getInvBetha(){
+        return this.inv_b = (int) ((n-b)*getInv_a()%getN());
     }
 
     public int gdc() {

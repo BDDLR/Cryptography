@@ -92,16 +92,16 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(bTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(87, 87, 87))
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(encryptLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(encryptLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(decryptLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(decryptLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -131,7 +131,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(decryptLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         pack();
@@ -142,13 +142,13 @@ public class MainFrame extends javax.swing.JFrame {
             int a = Integer.parseInt(aTxt.getText());
             int b = Integer.parseInt(bTxt.getText());
             int n = Integer.parseInt(nTxt.getText());
+            b = b % n;
             EuclidesValidation ev = new EuclidesValidation(a, b, n);
             int gcd;
-            if(n == 0){
+            if (n == 0) {
                 JOptionPane.showMessageDialog(this, "n cannot be 0",
                         "Info", JOptionPane.INFORMATION_MESSAGE, null);
-            }
-            else if (a > n) {
+            } else if (a > n) {
                 JOptionPane.showMessageDialog(this, "a must be less or equal than n",
                         "Info", JOptionPane.INFORMATION_MESSAGE, null);
             } else if ((gcd = ev.gdc()) != 1) {
@@ -157,11 +157,11 @@ public class MainFrame extends javax.swing.JFrame {
             } else {
                 ev.euclidesExtendido();
                 encryptLabel.setText("C = " + ev.getA() + "p + " + ev.getB() + " mod " + ev.getN());
-                decryptLabel.setText("p = " + (int)ev.getInv_a() + "(C + " + ev.getInv_b() + ") mod " + ev.getN());
+                decryptLabel.setText("p = " + (int) ev.getInv_a() + "C +" + ev.getInvBetha() + " mod " + ev.getN());
             }
         } else {
-            JOptionPane.showMessageDialog(this, 
-                    "Type a value for a, n and b", 
+            JOptionPane.showMessageDialog(this,
+                    "Type a value for a, n and b",
                     "Error", JOptionPane.ERROR_MESSAGE, null);
         }
 
