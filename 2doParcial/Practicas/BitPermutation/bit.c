@@ -23,8 +23,6 @@ int main(int argc, char const *argv[])
 			}
 			p++;
 		}
-		
-
 	}
 
 	printf("%X\n", output[0]);
