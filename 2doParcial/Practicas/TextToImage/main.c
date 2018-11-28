@@ -54,8 +54,6 @@
 	    img=LoadBMP(argv[1], &info,nuevImg,nameNewFile);
 	    tamMsg=loadMSG(argv[2],msg);
 
-	    printf("Msg:%s \n tam: %d\n",msg,tamMsg);
-
 	      if(img==NULL){
 
 	        printf("No es una imagen bmp\n");
@@ -63,10 +61,7 @@
 	        return 0;
 	      }
 
-
-	    DisplayInfo(&info);
 	    Cifra(img,msg,info.imgsize,tamMsg);
-	    //TextDisplay(&info, img);
 
 	    nuevImg=fopen(nameNewFile,"a");
 	    fwrite(img, info.imgsize,1, nuevImg);
@@ -81,9 +76,6 @@
 	    FILE *nuevImg;
 
 	    img=LoadBMP(argv[1], &info,nuevImg,nameNewFile);
-	    //tamMsg=loadMSG(argv[2],msg);
-
-	    //printf("Msg:%s \n tam: %d\n",msg,tamMsg);
 
 	      if(img==NULL){
 
@@ -92,12 +84,7 @@
 	        return 0;
 	      }
 
-
-	    DisplayInfo(&info);
 	    Descifra(img,argv[2],info.imgsize,atoi(argv[4]));
-
-
-
 	  }
 
 
@@ -115,35 +102,6 @@
 	  static unsigned char colores[9]=" bgfrRGB";
 	  int r,g,b;
 	  unsigned int cont=0;
-	  /* Dibujamos la imagen */
-
-	  /*
-	  for (y=info->height; y>0; y-=reduccionY)
-	    {
-	      for (x=0; x<info->width; x+=reduccionX)
-	    {
-
-	      printf("%d,",img[3*(x+y*info->width)]);
-	      printf("%d,",img[3*(x+y*info->width)+1]);
-	      printf("%d",img[3*(x+y*info->width)+2]);
-	      printf("-");
-	     
-
-
-	     
-	      cont++;
-	    }
-	      printf("\n");
-	    }*/
-
-
-	  for (int i = 0; i < info->imgsize; ++i)
-	  {
-	    printf("%d ",img[i]);
-	  }
-
-	    printf("cont: %d\n",cont );
-
 
 	}
 
@@ -154,7 +112,6 @@
 	  bmpFileHeader header;     /* cabecera */
 	  unsigned char *imgdata;   /* datos de imagen */
 	  uint16_t type;        /* 2 bytes identificativos */
-
 
 	  unsigned char fillHeader[84];
 
@@ -188,7 +145,6 @@
 	  fread(fillHeader, 84,1, f);
 	  fwrite(fillHeader, 84,1, file);
 
-
 	  /* Nos situamos en el sitio donde empiezan los datos de imagen,
 	   nos lo indica el offset de la cabecera de fichero*/
 	  //fseek(f, header.offset, SEEK_SET);
@@ -197,9 +153,6 @@
 	  /* Leemos los datos de imagen, tantos bytes como imgsize */
 	  fread(imgdata, bInfoHeader->imgsize,1, f);
 	  
-	  
-
-
 	  /* Cerramos */
 	  fclose(f);
 	  fclose(file);
@@ -218,8 +171,6 @@
 
 	  char msj[2]="";
 
-	  
-
 	  while(1==1){
 
 	    fscanf(file,"%c",&caracter);
@@ -230,14 +181,9 @@
 
 	    if(feof(file))
 	      break;
-
-	   // printf("%c", caracter);
-
 	  }
 
 	  msg[cont-1]=0;
-
-	 // printf("\n");
 
 	  return cont-1;
 
@@ -245,9 +191,6 @@
 	}
 
 	void Cifra(unsigned char *img,char *msg,int tamImg,int tamMsg){
-
-	  printf("\nMensaje:\n ");
-	  
 
 	  unsigned char auxBit=1;
 	  unsigned char saveByte;  
@@ -258,44 +201,30 @@
 	  int j=0;
 	  for (int i = 0; i < tamMsg; ++i)
 	  {
-	    
-	     printf("%c: ",msg[i]);
 	    for(int numBit=0,auxBit=128;numBit<8;numBit++,j++){
 
 	      auxSaveBit=msg[i]&auxBit;
 	      auxImgBit=img[i*8+numBit]&1;
 
-	     // printf("auxS: %x, auxI %x\n ",auxSaveBit,auxImgBit);
-
-	      printf(" %x ",img[j] );
-
 	      if( auxSaveBit==0 ){
 
 	        img[j]=img[j]&254;
-	      // printf(" img: %x\n ",img[j]);
 
 	      }
 	      else{
 
 	         img[j]=img[j]|255;
 	      }
-	   // printf("Modificado:%x \n",img[i*numBit*8+numBit] );
+	   
 	      auxBit=auxBit/2;
 
-	//       printf("%x ",img[i*8+numBit]);
-
 	    }
-	     printf("\n");
 	  }
-
-	  printf("\n");
-
 
 	}
 
 
 	void Descifra(unsigned char *img,char *msgName,int tamImg,int tamMsg){
-
 
 	unsigned char caracter;
 	unsigned char palabra=0;
@@ -315,24 +244,12 @@
 	      cont=cont/2;
 	    }
 
-	    printf("%c ",caracter );
 	    fwrite(&caracter,1,1,nuevImg );
-
-
-	    //printf("%x ",caracter);
-
-	     
+	    
 	  }
 
 	  printf("\n");
-
-
-	    
 	    fclose(nuevImg);
-
-
-
-
 	}
 
 	void DisplayInfo(bmpInfoHeader *info)
